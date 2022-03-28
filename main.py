@@ -1,3 +1,4 @@
+from new_commands import *
 import os
 
 from telegram import Bot
@@ -25,6 +26,11 @@ def main():
         'signout': signout,
         'newgame': new_game,
         'startgame': start_game,
+
+        'new_newgame': new_new_game,
+        'new_signout': new_signout,
+        'new_signup': new_signup,
+        'new_start_game': new_start_game
     }
 
     dispatcher = updater.dispatcher

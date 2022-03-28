@@ -119,6 +119,7 @@ def new_game(update: Update, context: CallbackContext) -> None:
 
     try:
         args = update.message['text']
+        print(update.message.text)
 
         games[groupChatId]['roles'] = parseNewGameArgs(args)
 
