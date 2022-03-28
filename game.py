@@ -1,43 +1,98 @@
-import random
 
 
+class Role:
+    name: str
+    quantity: int
+    random: bool
+
+    def __init__(self, name: str, quantity: int, random: bool = False) -> None:
+        self.name = name
+        self.quantity = quantity
+        self.random = random
+
+    def __repr__(self) -> str:
+        return f"{{name: {self.name}, quantity: {self.quantity}, random: {self.random}}}"
 
 
+class Player:
+    name: str
+    id: int
 
-def distribute_roles(players, SPECIAL_ROLES) -> dict:
-    """
-    Return a dict of roles with players e.g.
-    {
-        'Traitor': ['p7', 'p3'], 
-        'Detective': ['p5'], 
-        'Unschuldig': ['p8', 'p2', 'p1', 'p6', 'p4']
-    }
-    """
+    def __init__(self, name: str, id: int) -> None:
+        self.name = name
+        self.id = id
 
-    # SPECIAL_ROLES = {
-    #     'Traitor': 0.25,
-    #     'Detective': 0.125,
-    #     'SpezialRolle2': 0.125
-    # }
+    def __repr__(self) -> str:
+        return f"{{name: {self.name}, id: {self.id}}}"
 
-    # Zufällige Anordnung der Spieler
-    rand_players = players[::]
-    random.shuffle(rand_players)
 
-    # { role: [p1, p2], role2: [p3, p4, p5] }
-    distribution = {}
+class Game:
+    players: list[Player] = []
+    roles: list[Role] = []
+    currentGameMsgId: int = -1
 
-    # Spezial Rollen verteilen
-    for (role, amount) in SPECIAL_ROLES.items():
+    def __init__(self) -> None:
+        pass
 
-        # Wenn es 1 ist und nicht 1Z oder die random(boolean)
-        if (str(amount).isnumeric() == True or bool(random.getrandbits(1))):
-            # Z für Zufall, R für Random rausfiltern
-            amount = int(''.join(filter(str.isdigit, str(amount))))
-            distribution[role] = rand_players[:amount]
-            rand_players = rand_players[amount:]
+    def set_roles(self, input: str) -> None:
+        """
+        create roles array from given input string matching 
+        the following pattern:\n
+        `[roleName]:[quantity][random?]`\n
+        e.g. `Traitor:2 Jester:1Z`
+        """
+        roles = []
 
-    # remaining belong to innocent
-    distribution['Unschuldig'] = rand_players
+        try:
+            for role in input.split(" "):
+                role_name, role_quantity = role.split(":")
 
-    return distribution
+                roles.append(
+                    Role(
+                        name=role_name,
+                        quantity=int(role_quantity.lower().replace("z", "")),
+                        random="z" in role_quantity.lower()
+                    )
+                )
+            self.roles = roles
+
+        except:
+            raise Exception(
+                f"\"{input}\ doesn't match the required pattern: \n e.g. Traitor:2 Jester:1")
+
+    def set_current_game_msg_id(self, id: int):
+        self.currentGameMsgId = id
+
+    def find_player(self, id: int):
+        for player in self.players:
+            if player.id == id:
+                return player
+        return None
+
+    def add_player(self, name: str, id: int):
+        if (self.find_player(id) != None):
+            raise Exception(f"{name} has already joined!")
+
+        self.players.append(Player(name, id))
+
+    def remove_player(self, id: int):
+        player = self.find_player(id)
+
+        if (player == None):
+            raise Exception("Player not found")
+
+        self.players.remove(player)
+
+    def __repr__(self) -> str:
+        return f"""
+        {{
+            players: {self.players},
+            roles: {self.roles},
+            current_game_msg_id: {self.currentGameMsgId}
+        }}"""
+
+
+g1 = Game()
+g1.set_roles('Traitor:2 Jester:1z')
+g1.add_player("Sebastian", 123)
+print(g1)
