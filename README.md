@@ -1,7 +1,7 @@
 # Lasertag Telegram-Bot
 
 ## Projekt
-Um im Freundeskreis Lasertag mit Rollen, nach dem Prinzip des Spiels TTT (Trouble in Terrorist Town) zu spielen.
+Um im Freundeskreis Lasertag mit Rollen, nach dem Prinzip des Spiels TTT (Trouble in Terrorist Town) zu spielen. Anstelle einer App wurde hier auf einen Telegram Bot gesetzt, da so nur ein kleines "Backend" benötigt wird.
 
 
 
@@ -57,3 +57,8 @@ signout - Aus aktuellem Spiel abmelden
 ### Set environment variables
 Windows Powershell:  
 `$Env:TOKEN = "telegram_token..."`
+
+
+
+## Sonstiges
+- Falls ein Spieler zum ersten mal spielt, muss er dem Bot zuerst eine Nachricht persönlich senden
