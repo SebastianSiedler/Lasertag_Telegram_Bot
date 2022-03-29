@@ -10,11 +10,11 @@ def new_signup(update: Update, context: CallbackContext) -> None:
     group_chat_id = update.message.chat.id
 
     try:
-        print(games_db)
-        print(update.message.chat)
         game = games_db.find_game(group_chat_id)
+
         if (game == None):
             raise Exception("No game found")
+
         game.add_player(
             name=update.message.from_user.first_name,
             id=update.message.from_user.id
@@ -30,7 +30,7 @@ def new_signup(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         bot.send_message(
             text=str(e),
-            chat_id=int(group_chat_id)
+            chat_id=group_chat_id
         )
         raise e
 
@@ -45,7 +45,14 @@ def new_signout(update: Update, context: CallbackContext) -> None:
 
     try:
         game = games_db.find_game(group_chat_id)
+
+        if (game == None):
+            raise Exception("No game found")
+
         game.remove_player(update.message.from_user.id)
+
+        if (game == None):
+            raise Exception("No game found")
 
         bot.edit_message_text(
             chat_id=group_chat_id,
@@ -57,7 +64,7 @@ def new_signout(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         bot.send_message(
             text=str(e),
-            chat_id=int(group_chat_id)
+            chat_id=group_chat_id
         )
         raise e
 
@@ -79,18 +86,16 @@ def new_new_game(update: Update, context: CallbackContext) -> None:
 
         new_game_msg_id = bot.sendMessage(
             text=game.get_player_list_game_text(),
-            chat_id=int(group_chat_id),
+            chat_id=group_chat_id,
             parse_mode=ParseMode.MARKDOWN
         )
 
         game.current_game_msg_id = new_game_msg_id.message_id
 
-        print(games_db)
-
     except Exception as e:
         bot.send_message(
             text=str(e),
-            chat_id=int(group_chat_id)
+            chat_id=group_chat_id
         )
         raise e
 
@@ -105,10 +110,11 @@ def new_start_game(update: Update, context: CallbackContext) -> None:
 
     try:
         game = games_db.find_game(group_chat_id)
-        print(game)
+
+        if (game == None):
+            raise Exception("No game found")
 
         player_roles = game.distribute_roles()
-        print(player_roles)
 
         for role, players in player_roles.items():
             for player in players:
@@ -136,7 +142,7 @@ def new_start_game(update: Update, context: CallbackContext) -> None:
     except Exception as e:
         bot.send_message(
             text=str(e),
-            chat_id=int(group_chat_id)
+            chat_id=group_chat_id
         )
         raise e
 
