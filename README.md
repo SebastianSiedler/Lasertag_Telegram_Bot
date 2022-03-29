@@ -52,7 +52,11 @@ signout - Aus aktuellem Spiel abmelden
 
 
 
+## Sonstiges
+- Falls ein Spieler zum ersten mal spielt, muss er dem Bot zuerst eine Nachricht persönlich senden
 
+
+## Development
 ### Set environment variables
 ```bash
 vi ~/.bash_profile
@@ -65,6 +69,10 @@ source ~/.bash_profile
 pip install -r requirements.txt
 ```
 
+## Production
+Using Docker  
+```bash
+docker build --tag lasertag-bot .
+docker run -e TOKEN=mytoken lasertag-bot
+```
 
-## Sonstiges
-- Falls ein Spieler zum ersten mal spielt, muss er dem Bot zuerst eine Nachricht persönlich senden

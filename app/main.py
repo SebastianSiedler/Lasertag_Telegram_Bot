@@ -23,6 +23,8 @@ def main():
     for command, method in commands.items():
         updater.dispatcher.add_handler(CommandHandler(command, method))
 
+    print("Bot is running...", flush=True)
+
     updater.start_polling()
 
     updater.idle()
