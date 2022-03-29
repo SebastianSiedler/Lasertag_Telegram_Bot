@@ -35,7 +35,6 @@ Falls ein Mitspieler nicht mehr an der "Rollenvergabe" des aktuellen Spieles tei
 
 
 
-
 ## Telegram Bot
 
 ### Commands definieren
@@ -55,9 +54,16 @@ signout - Aus aktuellem Spiel abmelden
 
 
 ### Set environment variables
-Windows Powershell:  
-`$Env:TOKEN = "telegram_token..."`
+```bash
+vi ~/.bash_profile
+export JAVA_HOME=/opt/openjdk11
+source ~/.bash_profile
+```
 
+### Install Python dependencies
+```bash
+pip install -r requirements.txt
+```
 
 
 ## Sonstiges
