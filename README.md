@@ -60,7 +60,7 @@ signout - Aus aktuellem Spiel abmelden
 ### Set environment variables
 ```bash
 vi ~/.bash_profile
-export JAVA_HOME=/opt/openjdk11
+export TOKEN=myToken
 source ~/.bash_profile
 ```
 
