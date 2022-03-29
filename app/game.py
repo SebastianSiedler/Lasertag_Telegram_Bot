@@ -118,7 +118,14 @@ class Game:
         return distribution
 
     def get_player_list_game_text(self):
-        print("Players: ", self.players)
+        """
+        Erstellt eine Liste aller Spieler.
+        z.B.:\n
+        *Spieler*:\n
+        Player1\n
+        Player2\n
+        ...
+        """
         return ("*Spieler*: \n" + "\n".join([p.name for p in self.players]))
 
     def __repr__(self) -> str:
@@ -144,6 +151,13 @@ class GameDB:
         return None
 
     def create_game(self, group_chat_id, roles: str):
+        """
+        Erstellt ein neues Spiel und löscht falls vorhanden, das alte
+        Spiel der Chat-Gruppe heraus.
+
+        Args:
+            roles (str): The text after `/newgame`. e.g. `Traitor:1 Jester:1Z`
+        """
         game = self.find_game(group_chat_id)
         if (game != None):
             self.games.remove(game)
