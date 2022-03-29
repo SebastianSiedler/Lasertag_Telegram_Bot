@@ -5,7 +5,7 @@ from telegram.ext import CallbackContext
 games_db = GameDB()
 
 
-def new_signup(update: Update, context: CallbackContext) -> None:
+def signup(update: Update, context: CallbackContext) -> None:
     bot = context.bot
     group_chat_id = update.message.chat.id
 
@@ -35,7 +35,7 @@ def new_signup(update: Update, context: CallbackContext) -> None:
         raise e
 
 
-def new_signout(update: Update, context: CallbackContext) -> None:
+def signout(update: Update, context: CallbackContext) -> None:
     '''
     Wenn man grad einer Lobby gejoint ist, um diese wieder zu verlassen
     '''
@@ -69,7 +69,7 @@ def new_signout(update: Update, context: CallbackContext) -> None:
         raise e
 
 
-def new_new_game(update: Update, context: CallbackContext) -> None:
+def new_game(update: Update, context: CallbackContext) -> None:
     bot = context.bot
 
     group_chat_id = update.message.chat.id
@@ -100,7 +100,7 @@ def new_new_game(update: Update, context: CallbackContext) -> None:
         raise e
 
 
-def new_start_game(update: Update, context: CallbackContext) -> None:
+def start_game(update: Update, context: CallbackContext) -> None:
     '''
     Startet das Spiel mit den bisher gejointen Spielern und sendet diesen
     eine DM mit deren zufällig zugeteilten Rolle

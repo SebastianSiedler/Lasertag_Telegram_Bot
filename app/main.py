@@ -14,10 +14,10 @@ def main():
 
     commands = {
         'help': help_command,
-        'signup': new_signup,
-        'signout': new_signout,
-        'newgame': new_new_game,
-        'startgame': new_start_game,
+        'signup': signup,
+        'signout': signout,
+        'newgame': new_game,
+        'startgame': start_game,
     }
 
     for command, method in commands.items():
