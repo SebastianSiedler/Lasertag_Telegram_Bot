@@ -28,14 +28,14 @@ class Role:
 
 
 class Game:
-    __players: list[Player]
+    players: list[Player]
     roles: list[Role]
     current_game_msg_id: int
     group_chat_id: int
 
     def __init__(self, group_chat_id, roles: str) -> None:
         self.group_chat_id = group_chat_id
-        self.__players = []
+        self.players = []
         self.roles = []
         self.__set_roles(roles)
 
@@ -65,11 +65,8 @@ class Game:
             raise Exception(
                 f"\"{input}\" doesn't match the required pattern: \n e.g. Traitor:2 Jester:1")
 
-    def set_current_game_msg_id(self, id: int):
-        self.current_game_msg_id = id
-
     def find_player(self, id: int):
-        for player in self.__players:
+        for player in self.players:
             if player.id == id:
                 return player
         return None
@@ -78,7 +75,7 @@ class Game:
         if (self.find_player(id) != None):
             raise Exception(f"{name} has already joined!")
 
-        self.__players.append(Player(name, id))
+        self.players.append(Player(name, id))
 
     def remove_player(self, id: int):
         player = self.find_player(id)
@@ -86,53 +83,58 @@ class Game:
         if (player == None):
             raise Exception("Player not found")
 
-        self.__players.remove(player)
+        self.players.remove(player)
 
     def distribute_roles(self):
         """
         Return a dict of roles with players e.g.
+        ```
         {
-            'Traitor': [{name:'p7', id: 2}], 
-            'Detective': ['p5'], 
-            'Unschuldig': ['p8', 'p2', 'p1', 'p6', 'p4']
+            'Traitor': [{name:'p7', id: 7}], 
+            'Detective': [{name:'p3', id: 3}], 
+            'Unschuldig': [{name:'p6', id: 6}, ...]
         }
+        ```
         """
-        # TODO: wenn mehr rollen als spieler -> Fehler && min 2 Spieler
 
-        # Zufällige Anordnung der Spieler
-        rand_players = self.__players[::]
+        # Copy players list value
+        rand_players = self.players[::]
+
+        # random order of the players
         random.shuffle(rand_players)
 
         # { role: [p1, p2], role2: [p3, p4, p5] }
         distribution: dict[str, list[Player]] = {}
 
-        # Spezial Rollen verteilen
+        # distribute special roles
         for role in self.roles:
-            # Wenn es 1 ist und nicht 1Z oder die random(boolean)
             if (role.random == False or bool(random.getrandbits(1))):
                 distribution[role.name] = rand_players[:role.quantity]
                 rand_players = rand_players[role.quantity:]
 
         # remaining belong to innocent
         distribution['Unschuldig'] = rand_players
-        print(distribution)
+
         return distribution
 
-    def getPlayerListGameText(self):
-        print("Players: ", self.__players)
-        return ("*Spieler*: \n" + "\n".join([p.name for p in self.__players]))
+    def get_player_list_game_text(self):
+        print("Players: ", self.players)
+        return ("*Spieler*: \n" + "\n".join([p.name for p in self.players]))
 
     def __repr__(self) -> str:
         return f"""
         {{
             group_chat_id: {self.group_chat_id},
-            players: {self.__players},
+            players: {self.players},
             roles: {self.roles},
             current_game_msg_id: {self.current_game_msg_id}
         }}"""
 
 
 class GameDB:
+    """
+    Contains all currently running games
+    """
     games: list[Game] = []
 
     def find_game(self, group_chat_id: int):
@@ -153,18 +155,3 @@ class GameDB:
 
     def __repr__(self) -> str:
         return ("\n").join([g.__repr__() for g in self.games])
-
-
-# db = GameDB()
-
-# g1 = db.create_game(group_chat_id='gc_id_1', roles='Traitor:1Z')
-# g1.add_player("Sebastian", "1_s")
-# g1.add_player("Frank", "1_f")
-# g1.set_current_game_msg_id("cg_msg_id=1")
-
-# g2 = db.create_game(group_chat_id='gc_id_2', roles='Traitor:2 Jester:1Z')
-# g2.set_current_game_msg_id("cg_msg_id=2")
-
-# print(g1)
-
-# print(g2)

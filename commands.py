@@ -22,7 +22,7 @@ def new_signup(update: Update, context: CallbackContext) -> None:
 
         bot.edit_message_text(
             chat_id=group_chat_id,
-            text=game.getPlayerListGameText(),
+            text=game.get_player_list_game_text(),
             message_id=game.current_game_msg_id,
             parse_mode=ParseMode.MARKDOWN
         )
@@ -49,7 +49,7 @@ def new_signout(update: Update, context: CallbackContext) -> None:
 
         bot.edit_message_text(
             chat_id=group_chat_id,
-            text=game.getPlayerListGameText(),
+            text=game.get_player_list_game_text(),
             message_id=game.current_game_msg_id,
             parse_mode=ParseMode.MARKDOWN
         )
@@ -78,12 +78,12 @@ def new_new_game(update: Update, context: CallbackContext) -> None:
         )
 
         new_game_msg_id = bot.sendMessage(
-            text=game.getPlayerListGameText(),
+            text=game.get_player_list_game_text(),
             chat_id=int(group_chat_id),
             parse_mode=ParseMode.MARKDOWN
         )
 
-        game.set_current_game_msg_id(new_game_msg_id.message_id)
+        game.current_game_msg_id = new_game_msg_id.message_id
 
         print(games_db)
 
