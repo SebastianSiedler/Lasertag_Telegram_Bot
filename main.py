@@ -1,4 +1,3 @@
-from new_commands import *
 import os
 
 from telegram import Bot
@@ -10,7 +9,7 @@ from commands import *
 TOKEN = os.getenv("TOKEN")
 
 if (not TOKEN):
-    raise Exception("No Telegram Token in Enviroiment found!")
+    raise Exception("No Telegram token in Enviroiment found!")
 
 bot = Bot(token=TOKEN)
 
@@ -19,18 +18,11 @@ def main():
     updater = Updater(TOKEN)
 
     commands = {
-        'start': help_command,
         'help': help_command,
-        'signup': signup,
-        'signin': signup,
-        'signout': signout,
-        'newgame': new_game,
-        'startgame': start_game,
-
-        'new_newgame': new_new_game,
-        'new_signout': new_signout,
-        'new_signup': new_signup,
-        'new_start_game': new_start_game
+        'signup': new_signup,
+        'signout': new_signout,
+        'newgame': new_new_game,
+        'startgame': new_start_game,
     }
 
     dispatcher = updater.dispatcher
@@ -44,13 +36,8 @@ def main():
 
 
 if __name__ == '__main__':
-    import json
-    # keep_alive()
     while True:
         try:
             main()
         except Exception as e:
             print(e)
-            admins = json.loads(os.environ['ADMINS'])
-            for admin in admins:
-                bot.sendMessage(int(admin), str(e))

@@ -1,5 +1,3 @@
-
-
 import random
 
 
@@ -30,13 +28,15 @@ class Role:
 
 
 class Game:
-    __players: list[Player] = []
-    roles: list[Role] = []
+    __players: list[Player]
+    roles: list[Role]
     current_game_msg_id: int
     group_chat_id: int
 
     def __init__(self, group_chat_id, roles: str) -> None:
         self.group_chat_id = group_chat_id
+        self.__players = []
+        self.roles = []
         self.__set_roles(roles)
 
     def __set_roles(self, input: str) -> None:
@@ -63,7 +63,7 @@ class Game:
 
         except:
             raise Exception(
-                f"\"{input}\ doesn't match the required pattern: \n e.g. Traitor:2 Jester:1")
+                f"\"{input}\" doesn't match the required pattern: \n e.g. Traitor:2 Jester:1")
 
     def set_current_game_msg_id(self, id: int):
         self.current_game_msg_id = id
@@ -119,11 +119,13 @@ class Game:
         return distribution
 
     def getPlayerListGameText(self):
+        print("Players: ", self.__players)
         return ("*Spieler*: \n" + "\n".join([p.name for p in self.__players]))
 
     def __repr__(self) -> str:
         return f"""
         {{
+            group_chat_id: {self.group_chat_id},
             players: {self.__players},
             roles: {self.roles},
             current_game_msg_id: {self.current_game_msg_id}
@@ -151,3 +153,18 @@ class GameDB:
 
     def __repr__(self) -> str:
         return ("\n").join([g.__repr__() for g in self.games])
+
+
+# db = GameDB()
+
+# g1 = db.create_game(group_chat_id='gc_id_1', roles='Traitor:1Z')
+# g1.add_player("Sebastian", "1_s")
+# g1.add_player("Frank", "1_f")
+# g1.set_current_game_msg_id("cg_msg_id=1")
+
+# g2 = db.create_game(group_chat_id='gc_id_2', roles='Traitor:2 Jester:1Z')
+# g2.set_current_game_msg_id("cg_msg_id=2")
+
+# print(g1)
+
+# print(g2)
