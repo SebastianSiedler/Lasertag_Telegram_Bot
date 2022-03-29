@@ -1,26 +1,59 @@
-Damit der main Thread für den Bot laufen kann, benötigt man einen HTTP Server (hier mit Flask) und eine Überwachung, die den Webserver regelmäßig requests schickt, damit der nach 30 Minuten nicht in den Sleep zustand wechselt (z.B. UptimeRobot)  
+# Lasertag Telegram-Bot
 
-Currently hostet at:  
-https://replit.com/@andre360/TTT#main.py  
-  
-Service Monitoring with:  
-https://uptimerobot.com/
+## Projekt
+Um im Freundeskreis Lasertag mit Rollen, nach dem Prinzip des Spiels TTT (Trouble in Terrorist Town) zu spielen.
 
 
 
-"""
-Define command palette for Telegram Client
-1. Nachricht an @BotFather mit /setcommands
+## Das Spiel
+### Spiel erstellen
+
+Bei `/newgame` können die Namen für Rollen beliebig vergeben werden. 
+Lediglich Jester und Traitor müssen korrekt geschrieben werden, da diesen eine
+separate Funktion hinterliegt. Den restlichen Spielern wird die Rolle `Unschuldig` zugeteilt.
+
+z.B. sechs Spieler:  
+`/newgame Traitor:2 Jester:1Z` 
+```JSON
+{
+    "Traitor": ["spieler_5", "spieler_1"],
+    "Jester": ["spieler_4"],
+    "Unschuldig": ["spieler_6", "spieler_2", "..."]
+}
+```
+
+### Spiel beitreten
+Sobald ein Spiel erstellt wurde, können andere Mitspieler der Gruppe mit `/signup` dem Spiel beitreten
+
+### Spiel starten
+Mit `/startgame` wird das Spiel gestartet und die Spieler bekommen eine Direkt Nachricht, welche Rolle ihnen zugeteilt wurde.  
+Die Traitor bekommen zusätzlich mitgeteilt, wer die anderen Traitor, sowie Jester sind.  
+Dieser befehl kann beliebig oft wiederholt werden. Um die Rollen zu ändern muss ein neues Spiel erstellt werden
+
+### Spiel verlassen
+Falls ein Mitspieler nicht mehr an der "Rollenvergabe" des aktuellen Spieles teilnehmen möchte, kann er mit `/signout` die aktuelle Lobby verlassen
+
+
+
+
+## Telegram Bot
+
+### Commands definieren
+In der Telegramm App wird ein Button angezeigt, welcher alle verfügbaren Befehle auflistet.
+
+1. Nachricht an @BotFather mit `/setcommands`
 2. Bot auswählen
-3. senden: 
-
+3. folgende Beschreibung senden:  
+```
 newgame - Erstelle neue leere Lobby
 startgame - Startet das aktuelle Spiel
 signup - Am aktuellen Spiel teilnehmen
 signout - Aus aktuellem Spiel abmelden
+```
 
-"""
 
 
-Set Windows Enviroiment Variable
-Powershell: `$Env:TOKEN = "telegram_token..."`
+
+### Set environment variables
+Windows Powershell:  
+`$Env:TOKEN = "telegram_token..."`
